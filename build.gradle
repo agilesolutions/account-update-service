@@ -1,25 +1,48 @@
-// build.gradle
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.0'
+    id 'maven-publish'
+    id 'org.springframework.boot' version '3.4.5'
     id 'io.spring.dependency-management' version '1.1.4'
-    id 'org.flywaydb.flyway' version '9.22.3'
-    id 'jacoco'
 }
 
 group = 'com.agilesolutions'
 version = '1.0.0'
-sourceCompatibility = '21'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+
+}
 
 configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
+    standalone
+}
+
+
+ext {
+    commit = commit()
+    branchName = branchName()
+    set('springCloudVersion', "2024.0.0")
+
 }
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
 }
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
 
 dependencies {
     // Spring Boot Starters
@@ -36,8 +59,8 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
     // Database
-    implementation 'org.postgresql:postgresql:42.7.1'
     implementation 'org.flywaydb:flyway-core'
+    implementation 'com.h2database:h2:2.2.220'
 
     // MapStruct
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
@@ -48,8 +71,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
-    // OpenAPI
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+    // swagger ui for testing
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.8.9")
 
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -60,21 +84,86 @@ dependencies {
     testImplementation 'org.mockito:mockito-core'
 }
 
-test {
-    useJUnitPlatform()
-    finalizedBy jacocoTestReport
-}
 
-jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.required = true
-        html.required = true
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+
+    testLogging {
+        // Show standard out/err from the tests
+        showStandardStreams = true
+
+        // Events to log
+        events "passed", "skipped", "failed"
+
+        // Log exception details
+        exceptionFormat "full" // options: short, full
+
+        // Granularity of logging
+        displayGranularity = 2 // show nested test classes/methods nicely
+    }
+
+    // Optional: print summary after execution
+    afterSuite { desc, result ->
+        if (!desc.parent) { // will match the outermost suite
+            println "\n--------------------------------------------------"
+            println "Test Results: ${result.resultType}"
+            println "Tests run: ${result.testCount}, Passed: ${result.successfulTestCount}, Failed: ${result.failedTestCount}, Skipped: ${result.skippedTestCount}"
+            println "--------------------------------------------------"
+        }
     }
 }
 
-flyway {
-    url = 'jdbc:postgresql://localhost:5432/accountdb'
-    user = 'postgres'
-    password = 'postgres'
+String commit() {
+    return 'git rev-parse HEAD'.execute().text.trim()
 }
+
+String branchName() {
+    return hasProperty('branch.name') ? property('branch.name') : 'git branch --show-current'.execute().text.trim()
+}
+
+task generateHelmChart(type: Copy) {
+    inputs.dir('helm')
+    inputs.file('build.gradle')
+    from('helm') {
+        include 'account-service/**'
+        filter(ReplaceTokens, tokens: [appVersion: version])
+    }
+    into('build')
+
+}
+
+bootJar {
+
+    archiveFileName = './application.jar'
+
+    manifest{
+        attributes(
+                'Built-by'          : System.properties['user.name'],
+                'Build-Timestamp'   : java.time.Instant.now(),
+                'Build-Revision'    : commit,
+                'Build-Branch'      : branchName,
+                'Created-by'        : "Gradle ${gradle.gradleVersion}",
+                'Build-JDK'         : "${System.properties['java.version']} ${System.properties['java.vendor']} ${System.properties['java.vm.version']}",
+                'Build-OS'          : "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}"
+        )
+
+    }
+
+}
+
+task dockerBuild(type: Exec) {
+    commandLine 'docker', 'build', '-t', "agilesolutions/account-service:${version}", '.'
+}
+
+task dockerPush(type: Exec) {
+    commandLine 'docker', 'push', "agilesolutions/account-service:${version}"
+}
+
+task release(type: GradleBuild) {
+    tasks = ['clean', 'build', 'dockerBuild']
+}
+
+test.dependsOn generateHelmChart
+compileTestJava.dependsOn generateHelmChart
+
+generateHelmChart.dependsOn bootJar, jar

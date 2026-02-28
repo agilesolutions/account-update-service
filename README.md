@@ -2,7 +2,7 @@
 
 ## What this is
 
-A direct Java translation of the Amazon CardDemo COBOL Accept and process credit card detail request program `COCRDUPC.CBL `.
+A direct Java translation of the Amazon CardDemo COBOL Accept and process credit card detail request program `COACTUPC.CBL`.
 
 ## Why I did it 
 Migration is the best way to learn how to do code migration. By doing a direct line-by-line.

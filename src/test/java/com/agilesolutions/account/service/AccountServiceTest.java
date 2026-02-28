@@ -137,7 +137,7 @@ class AccountServiceTest {
     @DisplayName("COBOL COMPUTE OVER-LIMIT-IND: balance exceeds credit limit")
     void testCreateAccount_overLimit_setsIndicator() {
         validRequest.setCurrBal(new BigDecimal("6000.00")); // > creditLimit 5000
-        Account overLimitAccount = sampleAccount.toBuilder()
+        Account overLimitAccount = sampleAccount.builder()
                 .currBal(new BigDecimal("6000.00"))
                 .overLimitInd("N") // starts as N, should become Y
                 .build();

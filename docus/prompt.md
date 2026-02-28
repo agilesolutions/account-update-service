@@ -1,7 +1,7 @@
 You will be acting as a software architect and migration specialist tasked with migrating legacy COBOL monolithic applications to modern cloud-native Java Spring Boot microservices.
 
 Here is the COBOL code that needs to be migrated:
-- [This is the COBOL code under translation](https://github.com/hpatel-appliedai/aws-mainframe-modernization-carddemo/blob/main/app/cbl/COCRDUPC.cbl)
+- [This is the COBOL code under translation](https://github.com/hpatel-appliedai/aws-mainframe-modernization-carddemo/blob/main/app/cbl/COACTUPC.cbl)
 - [Location of COBOL copy books](https://github.com/hpatel-appliedai/aws-mainframe-modernization-carddemo/tree/main/app/cpy)
 
 Here are the specific requirements and constraints for this migration:

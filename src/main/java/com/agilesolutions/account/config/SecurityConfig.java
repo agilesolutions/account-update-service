@@ -35,7 +35,8 @@ public class SecurityConfig {
             "/swagger-ui.html",
             "/v3/api-docs/**",
             "/actuator/health",
-            "/actuator/info"
+            "/actuator/info",
+            "/api/v1/accounts"
     };
 
     @Bean
@@ -46,7 +47,8 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/accounts/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/accounts/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/accounts/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasRole("ADMIN")
