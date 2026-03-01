@@ -73,13 +73,10 @@ Also include:
 
 **3. Technology Stack**
 Provide specific recommendations for:
-- Java version (e.g., Java 17 LTS) with justification
+- Java version (e.g., Java 21 LTS) with justification
 - Spring Boot version and key Spring modules (Spring Data, Spring Security, Spring Cloud, etc.)
 - Spring Cloud components: Config Server, Eureka/Consul, Gateway, Circuit Breaker, etc.
 - Database technologies for each microservice with rationale
-- Message broker or event streaming platform (Kafka, RabbitMQ, AWS SQS/SNS, etc.)
-- Caching strategy (Redis, Hazelcast, etc.)
-- Cloud platform recommendations (AWS, Azure, GCP) with specific services
 - Container orchestration (Kubernetes, ECS, etc.)
 - CI/CD tooling recommendations
 
@@ -167,5 +164,3 @@ Important guidelines for your migration plan:
 - Address both functional and non-functional requirements
 - Be specific with technology choices and provide rationale
 - Consider cost implications of architectural decisions
-
-Your final output should contain only the <analysis> section followed by the <migration_plan> section. Do not include any preamble or additional commentary outside these sections.
