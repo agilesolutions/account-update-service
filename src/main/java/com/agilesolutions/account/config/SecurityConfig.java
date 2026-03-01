@@ -38,7 +38,6 @@ public class SecurityConfig {
             "/v3/api-docs/**",
             "/actuator/health",
             "/actuator/info",
-            "/api/accounts/**"
     };
 
     @Bean
@@ -51,12 +50,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/accounts/**").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyRole("USER", "ADMIN")
-//                        .requestMatchers(HttpMethod.POST, "/api/accounts/**").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.PUT, "/api/accounts/**").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.PATCH, "/api/accounts/**").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.DELETE, "/api/accounts/**").hasRole("ADMIN")
-//                        .requestMatchers("/audit/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/accounts/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/accounts/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/accounts/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/accounts/**").hasRole("ADMIN")
+                        .requestMatchers("/audit/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
