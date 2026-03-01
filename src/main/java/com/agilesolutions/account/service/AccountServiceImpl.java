@@ -116,7 +116,7 @@ public class AccountServiceImpl implements AccountService {
                 ));
 
         // Mirrors COBOL: EDIT-ACCOUNT-DATA guard conditions
-        if (account.getActiveStatus() == AccountStatus.INACTIVE) {
+        if (account.getActiveStatus() == AccountStatus.N) {
             throw new BusinessValidationException(
                     AccountConstants.ERR_ACCOUNT_INACTIVE,
                     "Cannot update inactive account: " + accountId
@@ -158,7 +158,7 @@ public class AccountServiceImpl implements AccountService {
                 ));
 
         String oldValue = auditService.serializeAccount(account);
-        account.setActiveStatus(AccountStatus.INACTIVE);
+        account.setActiveStatus(AccountStatus.N);
         accountRepository.save(account);
 
         auditService.logDelete("ACCOUNT", accountId, oldValue);

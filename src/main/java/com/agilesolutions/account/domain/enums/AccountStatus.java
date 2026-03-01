@@ -12,26 +12,22 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
-public enum AccountStatus {
-    ACTIVE("Y", "Active"),
-    INACTIVE("N", "Inactive");
+public enum AccountStatus {Y("Y"), N("N");
 
     private final String code;
-    private final String description;
 
     @JsonCreator
     public static AccountStatus fromCode(String code) {
-        for (AccountStatus status : values()) {
-            if (status.code.equalsIgnoreCase(code) ||
-                    status.name().equalsIgnoreCase(code)) {
+        for (AccountStatus status : AccountStatus.values()) {
+            if (status.code.equalsIgnoreCase(code)) {
                 return status;
             }
         }
-        throw new IllegalArgumentException("Unknown account status: " + code);
+        throw new IllegalArgumentException("Unknown AccountStatus code: " + code);
     }
 
     @JsonValue
-    public String toJson() {
-        return this.name();
+    public String getCode() {
+        return code;
     }
 }

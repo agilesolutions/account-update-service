@@ -95,7 +95,7 @@ VALUES
 -- admin / Admin@123!
 (
     'admin',
-    '$2a$12$eOUGmkKScNe/TYpOdBR29.DNRkxNFtyLZmSHN0cy4nkpF0q7bJtAO',
+    '$2a$12$D5CTepAmJTV8uW93ZNGKoeCSa.B/Ukej.vLBO8Z0OOkgm7.sGiBCO',
     'admin@agilesolutions.com',
     'System Administrator',
     TRUE,
@@ -104,7 +104,7 @@ VALUES
 -- user / User@123!
 (
     'user',
-    '$2a$12$GxQWUbpVHCCRcSLdaTPWqunM5nSxBFZ7q4PiE6Xz0ZxCuS.YxG3dW',
+    '$2a$12$o3J5IgE8zbHe56tQUEbAPeH.HezR12LeZtXAtk2cs9mNEqRdvpotm',
     'user@agilesolutions.com',
     'Standard User',
     TRUE,
@@ -113,7 +113,7 @@ VALUES
 -- ops / Ops@123!
 (
     'ops',
-    '$2a$12$JzJ5bAHkG3yVhLmCpN8XT.4R1PiKOsWqeUxDfYv9M7tBrZ2ElS6Ca',
+    '$2a$12$TrJnO3XIpAIdUeM4sAMvc.wt9gplXL4ZJb2IXtML1ZB3fwPSw9mei',
     'ops@agilesolutions.com',
     'Operations User',
     TRUE,
@@ -122,7 +122,7 @@ VALUES
 -- viewer / Viewer@123!
 (
     'viewer',
-    '$2a$12$RsT8mNkL2qW5vXpCjH7YBuD4aFoEiG9sZy0UbM3cVn6lQr1PwKe.J',
+    '$2a$12$hciyUdhTEFKPDaYMQY7pa.y29aOo1UQ3HMAslomjqtU5qRLMTC0da',
     'viewer@agilesolutions.com',
     'Read-Only Viewer',
     TRUE,
