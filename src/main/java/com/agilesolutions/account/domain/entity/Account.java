@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  * Fields directly correspond to COBOL group items and elementary items
  */
 @Entity
-@Table(name = "accounts")
+@Table(name = "accounts", schema = "public")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter

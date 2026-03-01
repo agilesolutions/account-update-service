@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * Mirrors COBOL DFHCOMMAREA audit tracking sections
  */
 @Entity
-@Table(name = "audit_log")
+@Table(name = "audit_log", schema = "public")
 @Getter
 @Setter
 @NoArgsConstructor

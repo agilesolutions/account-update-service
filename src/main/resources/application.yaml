@@ -3,9 +3,9 @@ spring:
   application:
     name: account-update-service
   datasource:
-    url: jdbc:h2:mem:mydb
+    url: jdbc:h2:mem:testdb;SCHEMA=public;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL;DATABASE_TO_LOWER=TRUE
     username: sa
-    password: password
+    password: admin
     driverClassName: org.h2.Driver
   jpa:
     defer-datasource-initialization: false
@@ -13,6 +13,15 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: none
+    properties:
+        hibernate:
+            format_sql: true
+            show_sql: true
+            default_schema: public
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   flyway:
     enabled: true
@@ -35,8 +44,8 @@ springdoc:
 
 server:
   port: 8080
-  servlet:
-    context-path: /api/v1
+//  servlet:
+//    context-path: /api/v1
 
 management:
   endpoints:

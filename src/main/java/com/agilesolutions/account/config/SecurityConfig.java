@@ -30,30 +30,33 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
 
     private static final String[] PUBLIC_ENDPOINTS = {
+            "/h2-console/**",
             "/auth/**",
+            "/audit/**",
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/v3/api-docs/**",
             "/actuator/health",
             "/actuator/info",
-            "/api/v1/accounts"
+            "/api/accounts/**"
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/accounts/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/accounts/**").permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/accounts/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/accounts/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/accounts/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, "/accounts/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/accounts/**").hasRole("ADMIN")
-                        .requestMatchers("/audit/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.POST, "/api/accounts/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.PUT, "/api/accounts/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.PATCH, "/api/accounts/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.DELETE, "/api/accounts/**").hasRole("ADMIN")
+//                        .requestMatchers("/audit/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())

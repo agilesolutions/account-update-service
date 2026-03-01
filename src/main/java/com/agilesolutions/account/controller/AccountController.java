@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
  *   - PF5 (Delete/Deactivate)   -> DELETE /accounts/{id}
  */
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("/api/accounts")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Account Management",
