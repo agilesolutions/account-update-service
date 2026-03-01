@@ -34,7 +34,7 @@ A direct Java translation of the Amazon CardDemo COBOL account maintenance progr
 **before diving into the code. It will give you important context on how I approached the migration and why I made certain design choices!!!...**
 
 ## Code structure
-
+```  
 account-update-service/
 ├── build.gradle
 ├── settings.gradle
@@ -98,7 +98,7 @@ account-update-service/
 │           │   └── AccountServiceTest.java
 │           └── integration/
 │               └── AccountIntegrationTest.java
-
+```
 
 
 
