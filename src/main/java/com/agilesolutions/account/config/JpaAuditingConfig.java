@@ -1,4 +1,3 @@
-// config/JpaAuditingConfig.java
 package com.agilesolutions.account.config;
 
 import org.springframework.context.annotation.Bean;
